@@ -1,0 +1,36 @@
+# Tipo de Filtro de Bloom a ser aplicado.
+# Pode ser: 'abf' (Advanced Bloom Filter), 'clk' (Cryptographic Long-term Key) ou 'rlb' (Robust Linkage Bloom)
+tipo_bloom: abf
+
+# Lista de colunas (presentes no DataFrame) que serão combinadas e codificadas no filtro.
+# A ordem das variáveis influencia o vetor gerado.
+variaveis_codificar:
+  - nome
+  - sobrenome
+  - cidade
+
+# Parâmetros específicos para a construção do filtro de Bloom.
+parametros:
+  # Tamanho do vetor binário gerado pelo filtro (quantidade de bits).
+  m: 512
+
+  # Quantidade de funções de hash simuladas.
+  k: 20
+
+  # Estratégia de hashing usada.
+  # 'double_hash' é um padrão comum, mas pode ser substituído conforme a implementação do UDF.
+  t_hash: double_hash
+
+  # Posição dos bits a ativar — relevante apenas para os filtros do tipo 'clk' ou 'rlb'.
+  # Para 'abf', esse campo é ignorado, mas deve estar presente por compatibilidade estrutural.
+  positions: null
+
+  # Vetor base de codificação — utilizado em alguns modos do filtro robusto.
+  vetor: null
+
+  # Parâmetro escalar 'a' utilizado na transformação do vetor (também exclusivo do tipo 'rlb').
+  a: null
+
+# Caminho de saída no HDFS onde os arquivos Parquet com o resultado serão salvos.
+# As bases A e B serão gravadas como <saida_parquet>/base_a e <saida_parquet>/base_b
+saida_parquet: hdfs://namenode:9000/output/bloom_resultado
